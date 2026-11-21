@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#101217">
+  <title>Easy IPTV</title>
+  <link rel="icon" href="assets/icon.png" type="image/png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="vendor/hls.min.js"></script>
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <button type="button" class="brand" data-view="home" aria-label="Easy IPTV home">
+        <span class="brand-mark" aria-hidden="true"><span></span></span>
+        <span>Easy IPTV</span>
+      </button>
+
+      <nav class="navigation" aria-label="Main navigation">
+        <button type="button" data-view="home" aria-current="page">
+          <span class="icon icon-home" aria-hidden="true"></span><span>Home</span>
+        </button>
+        <button type="button" data-view="live">
+          <span class="icon icon-tv" aria-hidden="true"></span><span>Live TV</span>
+        </button>
+        <button type="button" data-view="catalog">
+          <span class="icon icon-film" aria-hidden="true"></span><span>Movies &amp; Shows</span>
+        </button>
+        <button type="button" data-view="favorites">
+          <span class="icon icon-heart" aria-hidden="true">♡</span><span>Favorites</span>
+        </button>
+      </nav>
+
+      <button type="button" class="sidebar-sources" data-open-sources>
+        <span class="icon icon-sources" aria-hidden="true"></span><span>Playlist sources</span>
+      </button>
+    </aside>
+
+    <main id="main-content" tabindex="-1">
+      <header class="topbar">
+        <div class="search-box" role="search">
+          <span class="icon icon-search" aria-hidden="true"></span>
+          <input type="search" id="search" aria-label="Search channels, movies, and shows" placeholder="Search channels, movies, and shows" autocomplete="off">
+          <button type="button" id="search-clear" class="icon-button" aria-label="Clear search" hidden>×</button>
+        </div>
+        <button type="button" class="button button-outline header-source" data-open-sources>
+          <span aria-hidden="true">+</span> Add playlist
+        </button>
+      </header>
+
+      <div class="content">
+        <section data-panel="home" aria-label="Home">
+          <article class="hero" aria-labelledby="hero-title">
+            <img id="hero-image" src="assets/earth-night.jpg" alt="" width="2400" height="1597" fetchpriority="high">
+            <div class="hero-content">
+              <p id="hero-kicker" class="eyebrow">Featured film</p>
+              <h1 id="hero-title">His Girl Friday</h1>
+              <p id="hero-meta" class="hero-meta">1940 <span aria-hidden="true">·</span> Comedy</p>
+              <p id="hero-description" class="hero-description">A newspaper editor and his star reporter chase one last story together.</p>
+              <div class="button-row">
+                <button type="button" class="button button-primary" id="hero-play"><span class="play-symbol" aria-hidden="true"></span> Play film</button>
+                <button type="button" class="button button-glass" id="hero-favorite" aria-label="Add featured film to favorites" aria-pressed="false"><span aria-hidden="true">♡</span> Favorite</button>
+              </div>
+            </div>
+          </article>
+
+          <section class="collection" id="continue-section" aria-labelledby="continue-heading" hidden>
+            <div class="section-heading"><h2 id="continue-heading">Continue watching</h2></div>
+            <div class="media-grid" id="continue-grid"></div>
+          </section>
+
+          <section class="collection" aria-labelledby="featured-heading">
+            <div class="section-heading">
+              <h2 id="featured-heading">Movies &amp; shows</h2>
+              <button type="button" class="text-button" data-view="catalog">View all <span aria-hidden="true">→</span></button>
+            </div>
+            <div class="media-grid" id="featured-grid"></div>
+          </section>
+        </section>
+
+        <section data-panel="live" aria-labelledby="live-heading" hidden>
+          <div class="page-heading">
+            <h1 id="live-heading">Live TV</h1>
+            <div class="filter-row">
+              <label for="channel-group" class="visually-hidden">Filter channels by group</label>
+              <select id="channel-group"><option value="all">All groups</option></select>
+              <button type="button" class="button button-outline" id="live-refresh">Refresh</button>
+            </div>
+          </div>
+          <p id="live-status" class="view-status" role="status"></p>
+          <div class="media-grid channel-grid" id="channel-grid"></div>
+        </section>
+
+        <section data-panel="catalog" aria-labelledby="catalog-heading" hidden>
+          <div class="page-heading">
+            <h1 id="catalog-heading">Movies &amp; shows</h1>
+            <div class="filter-row">
+              <label for="catalog-kind" class="visually-hidden">Filter the catalog</label>
+              <select id="catalog-kind">
+                <option value="all">All titles</option>
+                <option value="movie">Movies</option>
+                <option value="series">Shows</option>
+              </select>
+            </div>
+          </div>
+          <div class="media-grid" id="catalog-grid"></div>
+        </section>
+
+        <section data-panel="favorites" aria-labelledby="favorites-heading" hidden>
+          <div class="page-heading"><h1 id="favorites-heading">Favorites</h1></div>
+          <div class="media-grid" id="favorites-grid"></div>
+        </section>
+
+        <section data-panel="search" aria-labelledby="search-heading" hidden>
+          <div class="page-heading"><h1 id="search-heading">Search results</h1></div>
+          <p id="search-status" class="view-status" role="status"></p>
+          <div class="media-grid" id="search-grid"></div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <dialog id="sources-dialog" class="dialog sources-dialog" aria-labelledby="sources-heading">
+    <header class="dialog-header">
+      <h2 id="sources-heading">Playlist sources</h2>
+      <button type="button" class="icon-button close-button" data-close-dialog aria-label="Close playlist sources">×</button>
+    </header>
+    <div class="dialog-body">
+      <form id="playlist-form" class="playlist-form">
+        <label for="playlist-url">M3U playlist URL</label>
+        <div class="input-action">
+          <input type="url" id="playlist-url" name="url" placeholder="https://example.com/channels.m3u" autocomplete="off" required>
+          <button type="submit" class="button button-primary">Add URL</button>
+        </div>
+      </form>
+      <div class="file-action">
+        <label class="button button-outline" for="playlist-file">Import M3U file</label>
+        <input type="file" id="playlist-file" accept=".m3u,.m3u8,audio/x-mpegurl,application/vnd.apple.mpegurl" aria-label="Import M3U file">
+      </div>
+      <p id="playlist-status" class="view-status" role="status"></p>
+      <section class="sources-list-section" aria-labelledby="saved-sources-heading">
+        <h3 id="saved-sources-heading">Your sources</h3>
+        <div id="playlist-list"></div>
+      </section>
+    </div>
+  </dialog>
+
+  <dialog id="player-dialog" class="dialog player-dialog" aria-labelledby="player-title">
+    <header class="dialog-header">
+      <div>
+        <h2 id="player-title">Player</h2>
+        <p id="player-subtitle" class="view-status"></p>
+      </div>
+      <button type="button" class="icon-button close-button" data-close-dialog aria-label="Close player">×</button>
+    </header>
+    <div class="dialog-body player-body">
+      <video id="video" controls playsinline preload="metadata" aria-label="Video player"></video>
+      <div class="player-feedback">
+        <p id="player-status" class="view-status" role="status"></p>
+        <a id="player-fallback" class="text-button" target="_blank" rel="noopener noreferrer" hidden>Open stream <span aria-hidden="true">↗</span></a>
+      </div>
+      <section id="episode-section" class="episode-section" aria-labelledby="episodes-heading" hidden>
+        <h3 id="episodes-heading">Episodes</h3>
+        <div id="episodes" class="episodes"></div>
+      </section>
+    </div>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" hidden></div>
+</body>
+</html>
